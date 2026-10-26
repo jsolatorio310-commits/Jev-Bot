@@ -1,0 +1,6 @@
+:root { font: 16px system-ui, sans-serif; color: #17202a; background: #f5f7fa; }
+main { max-width: 720px; margin: 20vh auto; padding: 2rem; }
+.eyebrow { color: #566573; letter-spacing: .08em; text-transform: uppercase; }
+h1 { font-size: 2.6rem; margin: .25rem 0 1rem; }
+.status { display: inline-block; margin-top: 1rem; padding: .45rem .7rem; border-radius: 999px; background: #d5f5e3; color: #196f3d; font-weight: 700; }
+
