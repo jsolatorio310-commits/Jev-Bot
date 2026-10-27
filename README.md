@@ -1,6 +1,6 @@
 # Jev Trading Bot
 
-Phase 1 provides the local foundation plus versioned contracts, replay fixtures, an append-only ledger, idempotent event keys, and portfolio rebuilds. The API refuses to start unless `PAPER_ONLY=true`; no order or live-execution route exists.
+Phase 2 provides the Phase 1 foundation plus finalized market candles, Binance WebSocket/REST normalization, sequence-gap detection, and stale-feed status. The API refuses to start unless `PAPER_ONLY=true`; no order or live-execution route exists.
 
 ## Run
 
@@ -15,6 +15,7 @@ docker compose up --build
 - API OpenAPI: `http://localhost:8000/docs`
 - Portfolio projection: `http://localhost:8000/ledger/portfolio`
 - Checked-in JSON Schemas: `contracts/`
+- Market status: `http://localhost:8000/market/status?symbol=BTCUSDT&interval=15m`
 
 ## Test
 

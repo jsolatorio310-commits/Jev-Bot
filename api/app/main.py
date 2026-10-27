@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException
 from .config import load_settings
 from .contracts import LedgerEvent
 from .ledger import Ledger
+from .market import Candle, CandleStore
 
 settings = load_settings()
 app = FastAPI(title="Jev Trading Bot API", version="0.1.0")
@@ -17,6 +18,7 @@ class RuntimeState:
 
 state = RuntimeState()
 ledger = Ledger()
+market_store = CandleStore()
 
 
 @app.get("/health")
@@ -53,6 +55,20 @@ def append_ledger_event(event: LedgerEvent) -> LedgerEvent:
 @app.get("/ledger/portfolio")
 def portfolio() -> dict:
     return ledger.rebuild()
+
+
+@app.post("/market/candles", status_code=201)
+def add_candle(candle: Candle) -> dict:
+    try:
+        status = market_store.add(candle)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    return {"candle": candle, "feed_status": status}
+
+
+@app.get("/market/status")
+def market_status(symbol: str, interval: str = "15m") -> dict:
+    return market_store.status(symbol, interval)
 
 
 # Phase 0 intentionally exposes no order or execution routes.
