@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jev-bot.local/contracts/ledger-event.schema.json",
+  "type": "object",
+  "required": ["event_id", "event_key", "event_type", "payload"],
+  "properties": {
+    "event_id": {"type": "string", "format": "uuid"},
+    "event_key": {"type": "string", "minLength": 1},
+    "event_type": {"enum": ["balance", "position", "order", "fill"]},
+    "payload": {"type": "object"}
+  },
+  "additionalProperties": false
+}
+

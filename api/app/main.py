@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from fastapi import FastAPI, HTTPException
 
 from .config import load_settings
+from .contracts import LedgerEvent
+from .ledger import Ledger
 
 settings = load_settings()
 app = FastAPI(title="Jev Trading Bot API", version="0.1.0")
@@ -14,6 +16,7 @@ class RuntimeState:
 
 
 state = RuntimeState()
+ledger = Ledger()
 
 
 @app.get("/health")
@@ -37,6 +40,19 @@ def resume() -> dict:
         raise HTTPException(status_code=409, detail="emergency stop is not active")
     state.emergency_stopped = False
     return {"emergency_stopped": False}
+
+
+@app.post("/ledger/events", status_code=201)
+def append_ledger_event(event: LedgerEvent) -> LedgerEvent:
+    try:
+        return ledger.append(event)
+    except Exception as exc:
+        raise HTTPException(status_code=409, detail="event_key already exists") from exc
+
+
+@app.get("/ledger/portfolio")
+def portfolio() -> dict:
+    return ledger.rebuild()
 
 
 # Phase 0 intentionally exposes no order or execution routes.

@@ -1,0 +1,19 @@
+{
+  "snapshot": {
+    "snapshot_id": "00000000-0000-0000-0000-000000000001",
+    "symbol": "BTC/USDT",
+    "interval": "15m",
+    "close_time": "2026-01-01T00:15:00Z",
+    "configuration_hash": "phase1-fixture"
+  },
+  "decision": {
+    "decision_id": "00000000-0000-0000-0000-000000000002",
+    "snapshot_id": "00000000-0000-0000-0000-000000000001",
+    "action": "HOLD",
+    "status": "blocked",
+    "blockers": ["phase1-fixture"],
+    "config_version": "0.1.0"
+  },
+  "events": []
+}
+

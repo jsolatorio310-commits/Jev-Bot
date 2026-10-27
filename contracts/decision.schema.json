@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jev-bot.local/contracts/decision.schema.json",
+  "type": "object",
+  "required": ["decision_id", "snapshot_id", "action", "status", "blockers", "config_version"],
+  "properties": {
+    "decision_id": {"type": "string", "format": "uuid"},
+    "snapshot_id": {"type": "string", "format": "uuid"},
+    "action": {"enum": ["BUY", "SELL", "HOLD"]},
+    "status": {"enum": ["approved", "blocked", "unresolved"]},
+    "blockers": {"type": "array", "items": {"type": "string"}},
+    "config_version": {"type": "string"}
+  },
+  "additionalProperties": false
+}
+

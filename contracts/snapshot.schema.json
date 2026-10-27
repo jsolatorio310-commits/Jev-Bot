@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jev-bot.local/contracts/snapshot.schema.json",
+  "type": "object",
+  "required": ["snapshot_id", "symbol", "interval", "close_time", "configuration_hash"],
+  "properties": {
+    "snapshot_id": {"type": "string", "format": "uuid"},
+    "symbol": {"type": "string"},
+    "interval": {"type": "string", "const": "15m"},
+    "close_time": {"type": "string"},
+    "configuration_hash": {"type": "string"}
+  },
+  "additionalProperties": false
+}
+
