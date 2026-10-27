@@ -6,6 +6,7 @@ from .config import load_settings
 from .contracts import LedgerEvent
 from .ledger import Ledger
 from .market import Candle, CandleStore
+from .strategy import StrategyRequest, TradePlan, evaluate
 
 settings = load_settings()
 app = FastAPI(title="Jev Trading Bot API", version="0.1.0")
@@ -69,6 +70,11 @@ def add_candle(candle: Candle) -> dict:
 @app.get("/market/status")
 def market_status(symbol: str, interval: str = "15m") -> dict:
     return market_store.status(symbol, interval)
+
+
+@app.post("/strategy/evaluate", response_model=TradePlan)
+def evaluate_strategy(request: StrategyRequest) -> TradePlan:
+    return evaluate(request.intraday, request.hourly, request.limits, request.position, request.now)
 
 
 # Phase 0 intentionally exposes no order or execution routes.

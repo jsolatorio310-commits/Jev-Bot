@@ -37,6 +37,14 @@ class TradePlan(BaseModel):
     reasons: list[str] = Field(default_factory=list)
 
 
+class StrategyRequest(BaseModel):
+    intraday: list[Bar]
+    hourly: list[Bar]
+    limits: RiskLimits
+    position: Position | None = None
+    now: datetime | None = None
+
+
 def ema(values: list[float], period: int) -> float | None:
     if len(values) < period:
         return None
@@ -97,7 +105,7 @@ def evaluate(
     risk_per_unit = entry - stop
     quantity = min(
         limits.equity * limits.risk_fraction / risk_per_unit,
-        limits.equity * limits.max_exposure_fraction / entry,
+        limits.equity * limits.max_exposure_fraction / (entry * (1 + limits.fee_fraction)),
     )
     if quantity <= 0 or entry * quantity * (1 + limits.fee_fraction) > limits.equity * limits.max_exposure_fraction:
         return TradePlan(action="HOLD", reasons=["risk limit failed"])

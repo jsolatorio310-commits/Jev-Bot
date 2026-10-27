@@ -19,6 +19,25 @@ def test_bullish_trend_without_reclaim_is_no_fit() -> None:
     assert evaluate(intraday, hourly, RiskLimits(equity=10_000)).action == "HOLD"
 
 
+def test_bullish_reclaim_produces_buy_plan() -> None:
+    base = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    intraday = [Bar(timestamp=base + timedelta(minutes=15 * i), open=100, high=101, low=99, close=100) for i in range(19)]
+    intraday += [
+        Bar(timestamp=base + timedelta(minutes=285), open=99, high=100, low=98, close=99),
+        Bar(timestamp=base + timedelta(minutes=300), open=100, high=102, low=100.5, close=101),
+    ]
+    plan = evaluate(intraday, bars(200, 100), RiskLimits(equity=10_000))
+    assert plan.action == "BUY"
+    assert plan.target == plan.entry + 2 * (plan.entry - plan.stop)
+    assert plan.quantity > 0
+
+
+def test_exposure_limit_blocks_entry() -> None:
+    intraday = bars(30, 100)
+    hourly = bars(200, 100)
+    assert evaluate(intraday, hourly, RiskLimits(equity=10_000, max_exposure_fraction=0.00001)).action == "HOLD"
+
+
 def test_stop_target_and_expiry_exits() -> None:
     intraday = bars(30, 100)
     opened = intraday[-1].timestamp

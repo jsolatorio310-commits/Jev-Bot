@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jev-bot.local/contracts/trade-plan.schema.json",
+  "type": "object",
+  "required": ["action", "quantity", "reasons"],
+  "properties": {
+    "action": {"enum": ["BUY", "SELL", "HOLD"]},
+    "entry": {"type": ["number", "null"]},
+    "stop": {"type": ["number", "null"]},
+    "target": {"type": ["number", "null"]},
+    "quantity": {"type": "number", "minimum": 0},
+    "expiry": {"type": ["string", "null"], "format": "date-time"},
+    "reasons": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
+
